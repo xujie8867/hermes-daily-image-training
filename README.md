@@ -133,6 +133,50 @@ digital art, cinematic
 
 ---
 
+## 安装与使用
+
+### Hermes Agent
+
+```bash
+# 直接放入 skills 目录，自动加载
+cp -r daily-image-training ~/.hermes/skills/creative/
+```
+
+之后任何生图请求会自动触发该 skill。也可以手动调用：
+
+```
+请用 daily-image-training skill 生图
+```
+
+### Claude Code
+
+将核心公式写入 `CLAUDE.md`：
+
+```markdown
+## AI 生图规则
+生成图片时，用相机参数语法替代艺术风格语法：
+- ✅ Canon EOS R5, 85mm f/1.2, ISO 800, window light
+- ❌ Gregory Crewdson cinematic staging, Kodak Portra 400
+必须带负向词：NOT CGI, NOT staged, NOT cinematic lighting
+```
+
+### Codex CLI
+
+在 `~/.codex/config.toml` 或项目 `CODEX.md` 中添加上方同样规则。
+
+### 通用（任何 AI 生图工具）
+
+直接复制核心公式和负向词到 system prompt 或自定义指令：
+
+```
+生成 prompt 公式：[场景+人物] + [自然光线] + [相机+镜头+ISO] + [皮肤细节] + [纪实风格]
+⛔ 禁止：摄影师名字、cinematic、editorial、staged、胶片型号
+✅ 必须：相机型号、焦段、光圈、ISO、自然光描述
+负向词：NOT CGI, 3D render, airbrushed, plastic skin, waxy, HDR, cinematic lighting, staged, digital art
+```
+
+---
+
 ## 版本
 
 | 版本 | 日期 | 变更 |
