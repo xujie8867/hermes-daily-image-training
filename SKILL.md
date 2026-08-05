@@ -24,16 +24,30 @@ last_updated: "2026-08-05"
 4. **归档**：保存到 YYYY-MM-DD-am/ 或 -pm/
 5. **报告**：MEDIA 发图
 
-## 可用资源（prompt 注入参考，不暴露给 AI）
+## 风格矩阵（9种，全部验证通过 · 2026-08-05）
 
-### 自然光线方案
-`overcast soft daylight` / `foggy morning diffused` / `blue hour twilight` / `golden hour warm ambient` / `window light natural side` / `single warm practical bulb`
+### 人像/人物
+| # | 风格 | 镜头+ISO | 光线语法 | 类别 |
+|---|------|---------|---------|------|
+| 1 | 新闻纪实 | R5 85/1.2, ISO 800-1600 | window light, overcast, tungsten bulb | portrait |
+| 2 | 商业时装 | Hasselblad 80/1.9, ISO 100 | north-facing window, indirect daylight | fashion |
+| 3 | 旅行人文 | Leica M11 35/1.4, ISO 400-800 | afternoon sun through leaves/dust | travel |
+| 6 | 棚拍肖像 | R5 50/1.2, ISO 100 | single softbox 45°, white seamless | studio |
+| 5 | 街头快照 | Ricoh GR III 28/2.8, ISO 1600-3200 | mixed city light, no flash | street |
 
-### 相机+镜头+ISO（必须写到 prompt 里）
-`Canon EOS R5 + 85mm f/1.2, ISO 800-1600` / `Sony A7R V + 50mm f/1.4, ISO 400-1600` / `Leica M11 + 35mm f/1.4, ISO 1600-3200` / `Sony A7R V + 70-200mm f/2.8, ISO 400`
+### 自然/动物
+| # | 风格 | 镜头+ISO | 光线语法 | 类别 |
+|---|------|---------|---------|------|
+| 7 | 自然风光 | Sony 24-70/2.8@35, ISO 200, tripod | dawn first light, mist | landscape |
+| 8 | 野生动物 | Sony 400/2.8 + 1.4x TC, ISO 800 | rim light, frost, golden hour | wildlife |
+| 9 | 昆虫微距 | R5 100/2.8 macro 1:1, ISO 400 | morning filtered through leaf | macro |
+| 4 | 极简风光 | Sony 24/1.4, ISO 100, tripod | pre-dawn long exposure 30s | landscape |
 
-### 构图
-`rule of thirds` / `leading lines` / `negative space` / `asymmetrical balance` / `foreground bokeh depth`
+### 通用负向（人像+动物+微距）
+`NOT CGI, NOT 3D render, NOT airbrushed, NOT plastic skin, NOT waxy, NOT doll, NOT beauty filter, NOT over-sharpened, NOT HDR, NOT cinematic lighting, NOT staged, NOT digital art`
+
+### 通用负向（纯风景）
+`NOT CGI, NOT 3D render, NOT HDR, NOT over-sharpened, NOT oversaturated, NOT digital art, NOT cinematic`
 
 ## 皮肤公式（人像必带）
 
