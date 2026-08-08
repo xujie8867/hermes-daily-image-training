@@ -79,10 +79,11 @@ NOT oversaturated, NOT perfect symmetry
   2. **物理真实感层**（人像必带）：`visible skin pores, natural skin texture, subtle imperfections, contact shadows, ambient occlusion, film grain, sensor noise, unretouched`。只写"NOT plastic"不够，要正向注入不完美
   3. **构图去理想化**：`candid, imperfect composition, natural asymmetry, awkward real-world details, no perfect symmetry, no idealized lighting`。AI 最爱"完美"，真实照片有瑕疵
 - **锐度铁律**：模型档位决定锐度。gpt-image-2 系列偏软，**Grok(grok-imagine-image-quality) 最锐**。若输出仍偏软 → 重跑换 Grok，不要将就
-- **默认通道：relay，但 model 用 gpt-image-2 的 high 档（铁律，2026-08-07 起）**
+- **默认通道：relay gpt-image-2（铁律，2026-08-07 起，2026-08-08 用户再次明确）**：所有生图默认一律用 relay 的 gpt-image-2（openai 插件，`image_gen.provider: openai`）。**只有用户主动说「用 grok 试试」「用 gemini 试试」等点名时才切换**，没说就默认 gpt-image-2，禁止自行切换。Gemini 通道（antigravity-gemini 插件）和 Grok 都是"待命备用"，仅用户点名时用，用完切回 openai。
   - 今天 08-07 实测：relay 默认 gpt-image-2 会落到 **medium 档**（缓存文件名 `openai_gpt-image-2-medium_...`），出图软、AI 感重
   - 生图时**显式指定 high 档**：`image_generate(prompt=..., model="gpt-image-2-high")`（若工具不接受 model 参数，则在 prompt 首行写 `high quality, detailed texture, sharp focus`）
   - relay 不可用时的首选替代是 **Grok（grok-imagine-image-quality）**——锐利、AI 感低，比 medium 档更接近用户标准
+  - **Gemini 通道（2026-08-08 配置，用户认可质感）**：插件 `antigravity-gemini` → `http://154.217.247.207:8045/v1`，model `gemini-3.1-flash-image`，key `antigravity-2026-8f3a`。`config.yaml` 的 `image_gen.provider: antigravity-gemini` 即启用；改回 `openai` 切回 relay。出图原生 848×1264（需 Lanczos 放大到 2048×3072），~12s，饱和度低（~20）写实感好。⚠️ `gemini-3-pro-image` 系列无配额（502 不可用）。改 `plugins.enabled` 后须 gateway 重启（外部终端）
   - 一切生图先走 relay，禁止默认直连 Codex（429 浪费）
 - **Codex 429 历史（2026-08-06）**：Codex OAuth 配额耗尽时 cron 自动按 channel-failure-diagnostics 切换，最终落到 relay gpt-image-2。若 relay 的 gpt-image-2 也失败 → Grok（xai）→ 报告
 - 自动切 Grok 场景（仅在 relay 不可用时）：①浅色主体+逆光+浅背景 ②黑白写实特写 ③镜面/反射表面 → 出完切回 relay
