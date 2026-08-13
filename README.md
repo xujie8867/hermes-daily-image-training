@@ -4,13 +4,20 @@
 
 一套经过实战验证的 AI 生图提示词方法论。**9 种风格，9 投 9 中。** 基于 [Hermes Agent](https://hermes-agent.nousresearch.com) + OpenAI Codex (gpt-image-2-high) + xAI Grok。
 
+![Last Updated](https://img.shields.io/badge/更新-2026--08--13-brightgreen)
+![Version](https://img.shields.io/badge/version-v5.3.1-blue)
+![Prompts](https://img.shields.io/badge/题库-879条-orange)
+![Status](https://img.shields.io/badge/状态-每日维护中-success)
+
+> 📌 **项目活跃维护中**：每天上午/下午两场 AI 生图训练，规则随真实产出反馈持续迭代，最新变更见 [CHANGELOG.md](CHANGELOG.md)。
+
 [English version below](#english)
 
 ---
 
 ## 问题
 
-我们收藏了 **859 条精选 prompt**（含 2026-08-08 新增 MiraiVFX 写实 98 条 + 插画手绘 40 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
+我们收藏了 **879 条精选 prompt**（含 2026-08-13 更新至 879 条：MiraiVFX 写实 98 条 + 插画手绘 40 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
 
 | 以前的写法 | 结果 |
 |---|---|
@@ -48,7 +55,7 @@
 │ ⛔ 不含大师名、胶片名、电影感              │
 ├─────────────────────────────────────────┤
 │ 第二层：知识库（Agent 自己看）             │
-│ 859条prompt、拉鲁斯348、大师技巧全集       │
+│ 879条prompt、拉鲁斯348、大师技巧全集       │
 │ → Agent 翻译成第一层语言再写入 prompt      │
 ├─────────────────────────────────────────┤
 │ 第三层：负向词（给 AI 看）                 │
@@ -56,7 +63,7 @@
 └─────────────────────────────────────────┘
 ```
 
-**859 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
+**879 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
 
 ---
 
@@ -190,6 +197,7 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v5.3.1 | 2026-08-13 | 提示词库更新至879条 + 光影/氛围模板去重规则（晨雾/金辉/长曝光等7类7天各限1次）+ 弃套路换光线思路 |
 | v5.3.0 | 2026-08-10 | 交付铁律置顶修复漏发 + 人像一律女性(female-portrait-director) + 题库选题(879条) + AM/PM双维度互斥 + 打乱 + prompt 架构瘦身(5.6K→1.2K) |
 | v5.2.2 | 2026-08-10 | 交付铁律强化（08-09/08-10 连续漏发根因修复） |
 | v5.1.1 | 2026-08-05 | 专业 README + 示例图 |
@@ -226,7 +234,7 @@ The fix: describe the scene in terms of physical constraints — lens, aperture,
 ### Three-Layer Architecture
 
 - **Layer 1**: Generation prompt (for the model, ≤150 words) — scene + light + camera + skin + negatives
-- **Layer 2**: Knowledge base (Agent only) — 859 prompts, photography references → Agent translates into Layer 1
+- **Layer 2**: Knowledge base (Agent only) — 879 prompts, photography references → Agent translates into Layer 1
 - **Layer 3**: Negative keywords — tell AI what NOT to do, never how to do it
 
 All 9 styles (portrait, fashion, travel, street, studio, landscape, wildlife, macro, minimalist) verified in a single day with zero retries.
