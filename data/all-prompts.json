@@ -5262,5 +5262,95 @@
     "title": "用 GPT-Image2 把古诗里的光影，做成了一组东方留白海报！\n\n紫烟升起、残阳铺开、月光穿透、星光垂落，古诗里的光，从来不是静止的\n\n1. 紫烟 — 日照香炉生紫烟\n2. 残阳 — 一道残阳铺水中\n3. 松间 — 明月松间照\n4. 星垂 — 星垂平野阔\n\n适合诗词视觉化、文化展览、书籍封面和文旅海报设计。",
     "prompt": "《古诗光影文化海报》提示词：\n\n【古诗词】：填写一句具有明确画面感的诗句\n【两字主题】：从诗句中提炼两个核心字\n【光的动作】：升起 / 铺开 / 穿透 / 垂落 / 流动 / 折射\n【核心装置】：岩体 / 水镜 / 琉璃屏风 / 平野 / 器物等\n【主色体系】：填写 2—4 种明确颜色\n【背景压纹】：烟气 / 水波 / 月晕 / 星轨 / 山形等\n【地点与日期】：填写\n\n生成一张 9:16 竖版东方留白艺术海报，将【古诗词】中的光线与动作转化为具有当代装置感的视觉隐喻。\n\n使用带有真实纸纤维、纸浆颗粒和自然压痕的高级手工艺术纸作为背景，保留大面积留白，并加入与诗句含义相关的低对比浅浮雕【背景压纹】。压纹必须参与叙事，远看克制，近看才发现细节。\n\n画面设置一个轮廓清晰、具有真实体积和材料触感的【核心装置】，通过【光的动作】组织主体、人物与空间。加入一个约占画面 1%—2% 的极小人物，用来建立巨大尺度与诗意叙事。\n\n色彩使用【主色体系】，可以鲜明大胆，但要有清楚主次。让光通过烟雾、水面、透明材质、投影、星丝或反射进入画面，形成明确的视觉路径，避免廉价霓虹和夸张奇幻特效。\n\n中文主标题使用【两字主题】，采用现代宋体、明朝体或具有雕刻感的衬线字体。可通过字距、错位、圆弧或细线增加轻度设计感，但必须保证汉字完整、准确、清晰。\n\n同时加入小字号原诗句、地点、日期和简短英文标题。整体呈现古诗意境、材料艺术、当代装置与高级编辑海报的结合。",
     "source": "larus-ai-bitable"
+  },
+  {
+    "title": "黑白高级时装·分裂无缝背景人像",
+    "prompt": "ULTRA-PREMIUM MASTERPIECE | ICONIC FINE-ART FASHION EDITORIAL | HYPERREALISTIC | LUXURY MONOCHROME PORTRAIT | MUSEUM-QUALITY FINE ART | MEDIUM FORMAT PHOTOGRAPHY | Hasselblad X2D 100C + XCD 90mm f/2.5 | intimate vertical close-up portrait from upper chest upward | woman with luxurious oversized textured messy updo with natural volume and flyaway strands | tailored matte-black high-neck couture top with sheer mesh sleeves | one forearm resting on a pristine white table, opposite arm rising vertically through center of frame covering half her face, wrist elegantly bent above forehead, fingers relaxed, uncovered eye locking directly into camera with calm mysterious powerful expression | perfectly split seamless studio backdrop, absolute black on left, pure white on right, dividing line exactly behind the raised arm | museum-quality studio lighting with large diffused octabox at 45 degrees, narrow strip rim light, negative fill, precision flags | exceptional grayscale separation, cinematic blacks, brilliant whites, smooth tonal gradients, visible skin pores and eyelashes | true fine-art monochrome conversion | elegant, powerful, timeless, sophisticated, museum-worthy | true photographic physics, natural optical lighting, no AI artifacts",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "空灵彩色·混凝土影棚窗光人像",
+    "prompt": "Fine art color portrait of a young woman with porcelain skin, delicate features, and long flowing dark hair with soft movement, standing in a minimalist concrete studio with dramatic side lighting | soft diffused key light from large north-facing window creating gentle gradients and subtle rim light on hair | melancholic yet hopeful mood, contemplative expression, eyes looking slightly off-camera | muted elegant color palette with desaturated teals, warm skin tones, and soft contrast | shot on medium format film, Kodak Portra 400 pushed one stop, subtle fine grain, natural skin texture with visible pores and micro details in hair | shallow depth of field, creamy bokeh, exquisite tonal transitions | in the tradition of modern fine art photography like Bastiaan Woudt and Paolo Roversi | museum-quality, timeless, emotionally resonant, hyperrealistic yet artistic, true photographic physics, no AI artifacts",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "风暴悬崖·孤独人像大画幅",
+    "prompt": "Artistic environmental portrait of a solitary figure in a dark oversized coat standing on a windswept cliff at twilight during an approaching storm | dramatic volumetric god rays breaking through heavy purple-teal clouds, lightning in distance, wind moving fabric and hair | cinematic wide composition with rule of thirds, vast negative space, lone human scale against nature | shot on large format film, Ilford HP5 with slight selenium toning, high contrast, rich textured clouds, visible film grain | masterful light and shadow play, melancholic and sublime atmosphere | fine art photography in the spirit of Gregory Crewdson and Ansel Adams | hyper-detailed, museum-quality, true photographic physics, natural optics, masterpiece",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "雨夜东京·粗粝黑白街头（推冲Tri-X）",
+    "prompt": "Candid artistic street photograph at dusk in Tokyo during light rain | woman with umbrella walking past glowing vintage signage and wet neon reflections on pavement | cyber-noir meets humanistic fine art street photography | subtle motion blur on rain streaks, sharp subject | shot on Leica M with 35mm Summilux, pushed Kodak Tri-X 400, beautiful grain structure, high contrast black and white with rich midtones | in the style of Daido Moriyama's grit combined with Fan Ho's poetic light | atmospheric, lonely, contemplative, perfectly observed moment, true film photography aesthetic, natural optics, masterpiece quality",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "大师级电影感人像·85mm暗调",
+    "prompt": "Masterpiece cinematic portrait photography of a striking 26-year-old woman with long, naturally wavy dark chestnut hair with individual strands catching the light, intense hazel eyes with intricate realistic iris texture and beautiful catchlights, natural skin with visible pores, subtle freckles and realistic texture, soft natural makeup | calm, introspective, slightly melancholic expression, gentle direct gaze | wearing a soft oversized cream knit sweater with realistic fabric texture | dramatic cinematic side lighting with strong golden rim light creating a glowing halo on hair and shoulders, soft fill light, deep moody shadows on one side of the face (chiaroscuro), subtle volumetric god rays and atmospheric haze | ultra photorealistic, hyper-detailed skin and hair, sharp focus on the eyes, creamy bokeh, shallow depth of field | shot on 85mm lens at f/1.4, subtle 35mm film grain, analog film aesthetic, sophisticated cinematic color grading with warm highlights and cool teal shadows | editorial fine-art photography meets blockbuster cinematic portraiture, in the style of Roger Deakins cinematography and Annie Leibovitz portraiture | authentic and natural, no plastic skin, no oversharpening, no artificial beauty filters, 8K ultra-realistic",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "高定时装工坊·钨丝灯纪实编辑",
+    "prompt": "An intimate fashion editorial inside a couture atelier, a woman in her late 20s wearing a hand-beaded champagne dress while a tailor adjusts the hem, bolts of fabric and sketch boards behind, warm tungsten practical lights, shot on Canon EOS R3 with 50mm f/1.2, candid three-quarter framing, photorealistic bead sparkle and fabric detail, luxurious storytelling vibe, film grain, natural skin texture",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "硬光剪影棚拍·单灯时装肖像",
+    "prompt": "A bold studio fashion portrait with dramatic hard shadows, a male model in his late 20s wearing a sharp black suit with no tie, crisp white shirt collar open, standing against a beige wall, single bare strobe light creating defined shadow lines, shot on Sony A1 with 85mm f/2, half-body framing, photorealistic fabric texture, high-contrast editorial look, visible film grain, unretouched skin texture",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "沙漠风纱裙·黄金背光尘埃",
+    "prompt": "A high-fashion desert shoot with a model in a flowing cobalt blue chiffon gown, fabric billowing in strong wind, sand dunes in the background, sun low on horizon, warm backlight and dust particles glowing, shot on Nikon Z8 with 85mm f/1.8, full-body framing at eye level, photorealistic skin and fabric translucency, cinematic editorial grading, subtle film grain",
+    "source": "web-weekly-2026-08-16",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "现代主义建筑师·哈苏窗光",
+    "prompt": "Portrait of a 35-year-old Japanese architect wearing a linen blazer, standing in a modernist building interior with large floor-to-ceiling windows, soft diffused natural light entering from camera left, shallow depth of field, asymmetrical editorial composition, shot on Hasselblad H6D with an 85mm lens at f/1.8, natural skin texture, restrained color grading, fine photographic grain.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "挪威峡湾渔村·蓝调暖窗",
+    "prompt": "Aerial drone photograph of a small fishing village on the Norwegian fjords at blue hour, mist rising from still water, warm amber cottage windows as restrained color anchors, near-perfect reflections broken by subtle ripples, layered depth from shoreline to mountains, shot on DJI Air 3S at ISO 100 with a 1/2-second exposure, cool muted palette, fine-art landscape photography, no people.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "黑曜石香水·翡翠单灯",
+    "prompt": "Luxury perfume bottle on polished black marble, dramatic single hard light from camera left grazing the crystal facets, deep emerald bokeh far behind, condensation droplets catching narrow highlights, diagonal negative-space composition, photographed with a Phase One XF IQ4 150MP and 120mm macro lens at f/8, controlled highlight roll-off, tactile material response, premium fine-art still-life photography.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "瑞士机芯·钨丝微距堆栈",
+    "prompt": "Extreme macro photograph of a Swiss mechanical watch movement, architecture of gears, ruby jewel bearings and hairspring rendered with precise tactile detail, one warm tungsten workshop lamp at 45 degrees producing gold edge highlights and rapid falloff into shadow, Canon MP-E 65mm 1-5x macro at f/8, focus-stacked depth, asymmetrical composition, specialist horology editorial quality, restrained contrast.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "伦勃朗工匠·高窗尘光",
+    "prompt": "A fine-art environmental portrait of an elderly artisan in a dim workshop, Rembrandt key light from a high window at 45 degrees creating a small triangle on the shadowed cheek, dust particles visible only inside the beam, worn wood and rusted tools forming layered depth, shot on ARRI Alexa Mini with an 85mm lens at f/1.8, natural wrinkles and pores, muted earth palette, unretouched documentary texture.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "晨市决定性瞬间·徕卡湿石路",
+    "prompt": "Documentary street photograph of a busy morning market just after rain, one vendor turning mid-gesture while pedestrians cross through layered foreground and background planes, wet cobblestones reflecting pale side light, shot on Leica M10 with 35mm Summicron at f/2, ISO 1600, slight edge distortion and background motion blur, decisive-moment composition, restrained colors, authentic high-ISO grain.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
+  },
+  {
+    "title": "CineStill夜市直闪·钨丝光晕",
+    "prompt": "A spontaneous nighttime fashion portrait at a crowded street market, subject caught mid-laugh rather than posing, harsh direct on-camera flash with rapid falloff into a darker tungsten-lit background, CineStill 800T 35mm scan look with warm amber highlights, cool teal shadows and realistic red halation around lamps, 35mm lens at f/2, slight handheld motion, soft corner falloff, organic grain and subtle chromatic aberration, candid editorial framing.",
+    "source": "web-weekly-2026-08-23",
+    "category": "artistic-photography"
   }
 ]

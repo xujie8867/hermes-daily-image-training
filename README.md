@@ -4,9 +4,9 @@
 
 一套经过实战验证的 AI 生图提示词方法论。**9 种风格，9 投 9 中。** 基于 [Hermes Agent](https://hermes-agent.nousresearch.com) + OpenAI Codex (gpt-image-2-high) + xAI Grok。
 
-![Last Updated](https://img.shields.io/badge/更新-2026--08--13-brightgreen)
-![Version](https://img.shields.io/badge/version-v5.3.1-blue)
-![Prompts](https://img.shields.io/badge/题库-879条-orange)
+![Last Updated](https://img.shields.io/badge/更新-2026--08--24-brightgreen)
+![Version](https://img.shields.io/badge/version-v5.4.0-blue)
+![Prompts](https://img.shields.io/badge/题库-894条-orange)
 ![Status](https://img.shields.io/badge/状态-每日维护中-success)
 
 > 📌 **项目活跃维护中**：每天上午/下午两场 AI 生图训练，规则随真实产出反馈持续迭代，最新变更见 [CHANGELOG.md](CHANGELOG.md)。
@@ -17,7 +17,7 @@
 
 ## 问题
 
-我们收藏了 **879 条精选 prompt**（含 2026-08-13 更新至 879 条：MiraiVFX 写实 98 条 + 插画手绘 40 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
+我们收藏了 **894 条精选 prompt**（含 MiraiVFX 写实 98 条、插画手绘 40 条、艺术摄影 25 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
 
 | 以前的写法 | 结果 |
 |---|---|
@@ -55,7 +55,7 @@
 │ ⛔ 不含大师名、胶片名、电影感              │
 ├─────────────────────────────────────────┤
 │ 第二层：知识库（Agent 自己看）             │
-│ 879条prompt、拉鲁斯348、大师技巧全集       │
+│ 894条prompt、拉鲁斯资料、大师技巧全集       │
 │ → Agent 翻译成第一层语言再写入 prompt      │
 ├─────────────────────────────────────────┤
 │ 第三层：负向词（给 AI 看）                 │
@@ -63,7 +63,7 @@
 └─────────────────────────────────────────┘
 ```
 
-**879 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
+**894 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
 
 ---
 
@@ -130,13 +130,13 @@ digital art, cinematic
 
 ## 自动切换规则
 
-默认 Codex (gpt-image-2-high)，以下场景立即切 Grok：
+默认使用 relay `gpt-image-2-high`。只有用户明确点名 Grok / Gemini，或默认通道实际不可用时才切换；完成后切回默认通道。
 
-1. 浅色主体 + 逆光 + 浅色背景（必糊）
-2. 黑白写实人像（AI 面部先天失真）
-3. 镜面/反射表面（盐沼、水面、玻璃）
+以下高风险场景优先通过深色背景、硬侧光、构图和物理真实感提示词修正，不因题材本身擅自换模型：
 
-出完切回 Codex。
+1. 浅色主体 + 逆光 + 浅色背景
+2. 黑白写实人像
+3. 镜面或强反射表面
 
 ---
 
@@ -197,6 +197,7 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v5.4.0 | 2026-08-24 | 题库更新至894条；方向骨架随机化；光源闭环与材质响应；同步AM/PM稳定运行状态 |
 | v5.3.1 | 2026-08-13 | 提示词库更新至879条 + 光影/氛围模板去重规则（晨雾/金辉/长曝光等7类7天各限1次）+ 弃套路换光线思路 |
 | v5.3.0 | 2026-08-10 | 交付铁律置顶修复漏发 + 人像一律女性(female-portrait-director) + 题库选题(879条) + AM/PM双维度互斥 + 打乱 + prompt 架构瘦身(5.6K→1.2K) |
 | v5.2.2 | 2026-08-10 | 交付铁律强化（08-09/08-10 连续漏发根因修复） |
@@ -211,7 +212,7 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 ### The Core Insight
 
-After accumulating 859 curated prompts and professional photography knowledge, our AI images got **worse**. Why?
+After accumulating 894 curated prompts and professional photography knowledge, our AI images got **worse**. Why?
 
 **AI models don't understand art history — they understand camera physics.**
 
@@ -234,7 +235,7 @@ The fix: describe the scene in terms of physical constraints — lens, aperture,
 ### Three-Layer Architecture
 
 - **Layer 1**: Generation prompt (for the model, ≤150 words) — scene + light + camera + skin + negatives
-- **Layer 2**: Knowledge base (Agent only) — 879 prompts, photography references → Agent translates into Layer 1
+- **Layer 2**: Knowledge base (Agent only) — 894 prompts, photography references → Agent translates into Layer 1
 - **Layer 3**: Negative keywords — tell AI what NOT to do, never how to do it
 
 All 9 styles (portrait, fashion, travel, street, studio, landscape, wildlife, macro, minimalist) verified in a single day with zero retries.

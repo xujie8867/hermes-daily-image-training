@@ -1,8 +1,8 @@
 ---
 name: daily-image-training
 description: "Load when the user requests image generation, image editing, or image-to-video. Auto-builds structured prompts using the five-segment template, selects generation channels, produces 4 variants, and iterates based on user feedback."
-version: "5.0.0"
-last_updated: "2026-08-05"
+version: "5.4.0"
+last_updated: "2026-08-24"
 ---
 
 # 每日生图 v5 — 新闻摄影写法
@@ -18,7 +18,7 @@ last_updated: "2026-08-05"
 
 ## 📚 提示词库选题（2026-08-10 用户要求，强制优先）
 
-- **题库位置**：`/Volumes/外接硬盘/hermes-images/daily-image-training/resources/awesome-gpt-image2/all-prompts.json`（879条：landscape 171 / portrait 155 / photography-miraivfx 98 / illustration-miraivfx 40 / wildlife 27 / street 21 / artistic-photography 10 / image-generation 347）
+- **题库位置**：`/Volumes/外接硬盘/hermes-images/daily-image-training/resources/awesome-gpt-image2/all-prompts.json`（894条：landscape 171 / portrait 155 / photography-miraivfx 98 / illustration-miraivfx 40 / wildlife 27 / street 21 / artistic-photography 25 / image-generation 347 / 未分类 10）
 - **选题流程**：每张先按分类从题库随机抽候选（python `random.sample` 抽 5-8 条 → 挑最符合的 1 条），其标题+核心意象=本张主题方向；分类对应：人像→portrait、风景→landscape、动物→wildlife、街拍→street、艺术感→artistic-photography/photography-miraivfx
 - **去重照旧**：题库抽到的主题仍过 .am-themes.json + 近7天历史去重（标题/意象重复重抽）
 - 题库只作主题灵感，最终 prompt 仍按 v5 公式重写（相机物理语言 + female-portrait-director）
@@ -34,7 +34,13 @@ last_updated: "2026-08-05"
 
 ## 生图流程
 
-1. **选题**：5个完全不同方向（人像/街头/自然/纪实/建筑），与近7天零重叠，其中至少1张世界有名建筑
+1. **选题（方向骨架随机化 · 2026-08-15 用户要求）**：
+   - **不再固定 5 类配额**！每天从"方向池"随机抽骨架，避免每天都看起来是同一类（旧规则：人像+建筑+野生动物+意境风景+静物 固定组合 → 感觉重复）
+   - **铁律保留（每天必有）**：①1 张女性人像（唯一带人物）②至少 1 张世界著名建筑 ③至少 1 张有意境风景
+   - **自由 2 张**：从方向池随机抽 2 个（每场不同，避免与历史场次重复）
+   - **方向池**（每张从不同方向选，与近 7 天零重叠）：野生动物 / 昆虫微距 / 街头纪实 / 新闻摄影 / 工业场景 / 天文观测 / 民俗节庆 / 宗教空间 / 老物件静物 / 植物图鉴 / 水下摄影 / 极简航拍 / 体育竞技 / 市井美食 / 废墟遗迹 / 港口渔市 / 山地徒步 / 沙漠戈壁 / 雨林植物 / 雪域高原 / 极地风光 / 都市夜景
+   - **骨架去重**：7 天窗口内，同样的"方向组合"不重复出现（如今天 [人像+建筑+风景+野生动物+静物]，明天骨架必须不同，可 [人像+建筑+风景+街头+工业]）
+   - **题材池 shuffle**：每次运行先洗牌再挑选，5 张方向+风格各不相同
 2. **写 prompt**：按核心公式，不用任何艺术大师名
 3. **生成**：image_generate(portrait)，可并行出5张
 4. **归档**：保存到 YYYY-MM-DD-am/ 或 -pm/
@@ -93,7 +99,8 @@ NOT oversaturated, NOT perfect symmetry
 - **高级艺术感配额（2026-08-09 用户反馈修复，强制）**：每日 5 张中至少 3 张必须是**高级艺术感主题/构图**（参考已验证惊艳的 MiraiVFX 方向），不再每天"手艺人+窗光"稳妥纪实：
   - 高冲击题材池（每张从不同方向选，与近 7 天零重叠）：雨夜霓虹反射街头、直闪胶片人像（黑色背景+硬闪光+复古胶片）、极简航拍、雕版插画质感、植物图鉴/博物画、翡翠微缩/器物微缩、强光比剪影、极端天气（风暴/极光/浓雾）、决定性瞬间、青橙分色夜景
   - 构图艺术感：黄金分割/负空间留白/几何秩序/框架构图/低角度仰视/俯视航拍
-  - 光影艺术感：硬光比（伦勃朗/蝴蝶光）、逆光轮廓、霓虹分色（teal shadows + warm highlights）、单束光束
+  - 光影艺术感：硬光比（伦勃朗/蝴蝶光）、逆光轮廓、霓虹分色（teal shadows + warm highlights）、单束光束、发丝光（hair light 深发深背景分离）、光束透过源+haze（god rays through window/foliage，避免 AI 乱画角度）、彩色bokeh（背景灯源圆斑）
+  - **光线闭环+材质响应（2026-08-23 周更）**：每张写清 `光源 + 方向/角度 + 软硬 + 衰减/补光`；涉及布料/金属/玻璃时再写光如何作用于材质（织纹、透光、窄高光、反射），不只写 `detailed texture`
   - 仍限"真实可拍"：不超现实/科幻/梦幻，只是题材和光影更有张力；色彩锚点每张至少一个（暖光斑/彩色主体/金色时刻），禁止全图灰调
 - **有意境风景主题（2026-08-09 用户要求，强制）**：每日 5 张中至少 1 张必须是有意境的风景（poetic landscape），优先从自然/极简风光里出：
   - 意境方向（每张不同，与近7天零重叠）：薄雾孤舟/晨雾山峦 · 蓝调时刻旷野 · 孤树于旷野(极简留白) · 云雾海/云上日出 · 雨后湿润空镜 · 雪后静谧 · 长曝光雾化流水 · 芦苇荡夕照 · 水墨意境山峦(真实可拍非插画)
