@@ -4,8 +4,8 @@
 
 一套经过实战验证的 AI 生图提示词方法论。**9 种风格，9 投 9 中。** 基于 [Hermes Agent](https://hermes-agent.nousresearch.com) + OpenAI Codex (gpt-image-2-high) + xAI Grok。
 
-![Last Updated](https://img.shields.io/badge/更新-2026--08--24-brightgreen)
-![Version](https://img.shields.io/badge/version-v5.4.0-blue)
+![Last Updated](https://img.shields.io/badge/更新-2026--08--29-brightgreen)
+![Version](https://img.shields.io/badge/version-v5.5.0-blue)
 ![Prompts](https://img.shields.io/badge/题库-894条-orange)
 ![Status](https://img.shields.io/badge/状态-每日维护中-success)
 
@@ -197,6 +197,7 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v5.5.0 | 2026-08-29 | Grok 人像固定分流；新增参考图驱动的中高尺度成年时尚写真规则；修复原始比例交付；公众号贴图改为仅图片+简短提示词 |
 | v5.4.0 | 2026-08-24 | 题库更新至894条；方向骨架随机化；光源闭环与材质响应；同步AM/PM稳定运行状态 |
 | v5.3.1 | 2026-08-13 | 提示词库更新至879条 + 光影/氛围模板去重规则（晨雾/金辉/长曝光等7类7天各限1次）+ 弃套路换光线思路 |
 | v5.3.0 | 2026-08-10 | 交付铁律置顶修复漏发 + 人像一律女性(female-portrait-director) + 题库选题(879条) + AM/PM双维度互斥 + 打乱 + prompt 架构瘦身(5.6K→1.2K) |
