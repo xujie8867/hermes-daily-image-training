@@ -1,47 +1,6 @@
 # 每日 cron 输出验收 + 风格去重机制
 
-## 🔴 风格去重强制检查（Rule 0y）
-
-**每次生图前必须执行，不管是 cron 还是手动。**
-
-### 去重工具
-
-位置：`/Volumes/外接硬盘/hermes-images/daily-image-training/dedup_check.py`
-
-```bash
-# 列出所有已用风格
-python3 /Volumes/外接硬盘/hermes-images/daily-image-training/dedup_check.py
-
-# 检查某个风格key是否可用
-python3 /Volumes/外接硬盘/hermes-images/daily-image-training/dedup_check.py check <style_key>
-# 退出码0=可用，退出码1=已存在（禁止使用）
-
-# 标记风格为已使用
-python3 /Volumes/外接硬盘/hermes-images/daily-image-training/dedup_check.py add <style_key> [YYYY-MM-DD]
-```
-
-### 风格key命名规则
-
-```
-{大类}-{子类}-{特征}
-```
-
-| 大类 | 示例key |
-|------|---------|
-| abstract | abstract-kintsugi, abstract-stained-glass, abstract-sem-macro, abstract-origami |
-| portrait | portrait-hongkong-retro, portrait-french-lazy, portrait-sporty-tennis |
-| infographic | infographic-city-cutaway, infographic-natural-field-guide |
-| poster | poster-brand-kv, poster-city-artist-{artist} |
-| ecommerce | ecommerce-luxury-watch, ecommerce-skincare-white |
-| illustration | illustration-ghibli, illustration-ukiyoe, illustration-cyberpunk |
-
-### 去重流程（每次生图必须过）
-
-1. **选好风格后**：构造 style_key
-2. **检查历史**：`python3 dedup_check.py check <style_key>`
-3. **被阻塞** → 换大类，不要在同大类内换子类
-4. **生成完** → `python3 dedup_check.py add <style_key>` 立即标记
-5. **180天内不重复**：同一 style_key 180天内不再生成
+> ⚠️ 2026-09-10 v6 精简：本文件的 dedup_check.py 180天 style_key 机制**已废弃**，当前每日生图去重以 SKILL.md「去重」一节为准（人物志30天 + 非人物题材30天 + 光影模板7天 + AM/PM互斥）。以下仅保留 cron 验收与故障恢复经验。
 
 ## Durable lesson
 
