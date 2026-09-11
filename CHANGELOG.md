@@ -2,6 +2,27 @@
 
 本仓库采用**每日实战驱动**的开发节奏：每天上午/下午两场 AI 生图训练，规则随真实产出反馈持续迭代。
 
+## v6.1.0 — 2026-09-11
+
+- **规则升级到 v6.1**：每场从 5 张改为 **7 张**（林晚人物志 + 东方故事 + 白描 + 4 张无人图），QC 瘦身为 3 项硬门禁
+- **通道实测**：当前 CPA/openai 中转拒绝 `gpt-image-2.5-*`（含 sunburst）；未知 2.5 id 会被插件静默落到 medium。运行时锁定 `gpt-image-2-high`
+- **提示词库更新**：`all-prompts.json` 894 → **1140 条**（image-generation 493、artistic-photography 37、ecommerce 四类 88）
+- **01 文字机制**：林晚海报标题与短文案改由本地 Songti SC 确定性排版，不让模型直出字
+- **定时任务持续运行**：上午 10:00 / 下午 13:30；2026-09-11 两场均 completed + delivered（AM 7/7 外接硬盘，PM 7/7 本机归档）
+- 新增 `docs/daily-status-2026-09-11.md`
+
+## v6.0.0 — 2026-09-10
+
+**全面精简重构（防步数超限 + 消除规则冲突）**
+
+- SKILL.md 从 189 行 / 30KB 瘦身至 ~110 行 / 7.5KB（约 1/4），零死代码。
+- 统一张数为 7 张（删除 5 张旧规则矛盾）；统一模型为 gpt-image-2.5-high 单通道（删除 Grok/Gemini/Codex 429 多通道切换规则）。
+- 去重 5 套合并为 3+1：人物志30天 + 非人物题材30天 + 光影模板7天 + AM/PM互斥；废弃 dedup_check.py 180天 style_key 机制。
+- QC 从 InsightFace+Vision+OCR+切片墨量+四角亮度 瘦身为 3 项硬门禁（无人图0人、人像1脸2手、衍生图OCR空）；余弦比对降为参考值不触发重试。
+- 删除死代码：两段常规时装人像规则（~3000字）、Grok 720×1280 比例规则、重复负向词块。
+- references/ 12 个历史实验文件移入 archive/。
+- cron 挂载技能 4→2（creative/daily-image-training + photo-story）；AM/PM prompt 重写为精简版。
+
 ## v5.5.0 — 2026-08-29
 
 - **Grok 人像固定分流**：唯一女性人像使用 `grok-imagine-image-quality`，其余4张无人图使用 OpenAI `gpt-image-2-high`
@@ -63,15 +84,3 @@
 ## v4.0.0 — 2026-08-04
 
 - 艺术感 v2.0 框架（已被 v5 取代）
-
-## v6.0.0 — 2026-09-10
-
-**全面精简重构（防步数超限 + 消除规则冲突）**
-
-- SKILL.md 从 189 行 / 30KB 瘦身至 ~110 行 / 7.5KB（约 1/4），零死代码。
-- 统一张数为 7 张（删除 5 张旧规则矛盾）；统一模型为 gpt-image-2.5-high 单通道（删除 Grok/Gemini/Codex 429 多通道切换规则）。
-- 去重 5 套合并为 3+1：人物志30天 + 非人物题材30天 + 光影模板7天 + AM/PM互斥；废弃 dedup_check.py 180天 style_key 机制。
-- QC 从 InsightFace+Vision+OCR+切片墨量+四角亮度 瘦身为 3 项硬门禁（无人图0人、人像1脸2手、衍生图OCR空）；余弦比对降为参考值不触发重试。
-- 删除死代码：两段常规时装人像规则（~3000字）、Grok 720×1280 比例规则、重复负向词块。
-- references/ 12 个历史实验文件移入 archive/。
-- cron 挂载技能 4→2（creative/daily-image-training + photo-story）；AM/PM prompt 重写为精简版。

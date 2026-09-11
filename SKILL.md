@@ -1,11 +1,11 @@
 ---
 name: daily-image-training
 description: "Load when the user requests image generation, image editing, or image-to-video. Auto-builds structured prompts using the five-segment template, selects generation channels, produces 4 variants, and iterates based on user feedback."
-version: "6.0.0"
-last_updated: "2026-09-10"
+version: "6.1.0"
+last_updated: "2026-09-11"
 ---
 
-# 每日生图 v6 — 精简版（2026-09-10 全面重构）
+# 每日生图 v6.1 — 精简版（2026-09-11 通道实测）
 
 > v6 目标：单一事实源、零死代码、可脚本化执行。旧版 5 套去重、双份负向词、多通道切换规则已全部合并或删除。
 
@@ -33,10 +33,11 @@ last_updated: "2026-09-10"
 
 ## 模型与通道（唯一规则）
 
-- **全部 7 张统一 `gpt-image-2.5-high`**（config: `image_gen.model: gpt-image-2.5-high`）。不切 Grok、不切 Gemini、不切 Codex，除非用户当次明确指定。
+- **配置语义**：`image_gen.model: gpt-image-2.5-high`（tier 名）。不切 Grok、不切 Gemini、不切 Codex，除非用户当次明确指定。
+- **2026-09-11 实测**：当前 CPA/openai 中转只接受 `gpt-image-1.5 / gpt-image-2 / grok-imagine-*`。`gpt-image-2.5-sunburst-high` 会 400。运行时实际走 `gpt-image-2-high`（可用最高档）。未知 2.5 id 会被插件静默落到 medium，必须显式写成 `gpt-image-2-high`。
 - `aspect_ratio=portrait`，prompt 首行 `Vertical 2:3 portrait, full frame edge to edge`。
 - relay 原始输出 1024×1536，等比 Lanczos 放大至 2048×3072 交付。
-- 任务结束前无需回读 config（单通道无切换风险）。
+- 01 中文标题与短文案由本地 Songti SC 确定性排版写入，不依赖模型直出文字。
 
 ## 核心公式（写 prompt 的唯一依据）
 
@@ -91,7 +92,7 @@ NOT cinematic lighting, NOT staged portrait, NOT oversaturated, NOT digital art
 1. 01 最多定向重试 1 次；字形问题用本地排版图层解决，禁止 v3/v4 循环。
 2. 04-07 单轮并发/连续发起，禁止逐张串行问答式校验。
 3. 放大 + QC + README/meta 生成脚本化，单步完成。
-4. 模型参数固定写 `gpt-image-2.5-high`。
+4. 模型参数固定写当前可用最高档：`gpt-image-2-high`（config 语义仍可保留 2.5-high tier）。
 
 ## 交付与公众号
 

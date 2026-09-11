@@ -2,14 +2,14 @@
 
 > AI 生成的照片，要像照片——不是 AI 画。
 
-一套经过实战验证的 AI 生图提示词方法论。**9 种风格，9 投 9 中。** 基于 [Hermes Agent](https://hermes-agent.nousresearch.com) + OpenAI Codex (gpt-image-2-high) + xAI Grok。
+一套经过实战验证的 AI 生图提示词方法论。**9 种风格，9 投 9 中。** 基于 [Hermes Agent](https://hermes-agent.nousresearch.com) + OpenAI Codex 兼容通道 (`gpt-image-2-high`) + xAI Grok。
 
-![Last Updated](https://img.shields.io/badge/更新-2026--08--29-brightgreen)
-![Version](https://img.shields.io/badge/version-v5.5.0-blue)
-![Prompts](https://img.shields.io/badge/题库-894条-orange)
+![Last Updated](https://img.shields.io/badge/更新-2026--09--11-brightgreen)
+![Version](https://img.shields.io/badge/version-v6.1.0-blue)
+![Prompts](https://img.shields.io/badge/题库-1140条-orange)
 ![Status](https://img.shields.io/badge/状态-每日维护中-success)
 
-> 📌 **项目活跃维护中**：每天上午/下午两场 AI 生图训练，规则随真实产出反馈持续迭代，最新变更见 [CHANGELOG.md](CHANGELOG.md)。
+> 📌 **项目活跃维护中**：每天上午/下午两场（每场 7 张），规则随真实产出反馈持续迭代，最新变更见 [CHANGELOG.md](CHANGELOG.md)。当前运行状态见 [docs/daily-status-2026-09-11.md](docs/daily-status-2026-09-11.md)。
 
 [English version below](#english)
 
@@ -17,7 +17,7 @@
 
 ## 问题
 
-我们收藏了 **894 条精选 prompt**（含 MiraiVFX 写实 98 条、插画手绘 40 条、艺术摄影 25 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
+我们收藏了 **1140 条精选 prompt**（含 MiraiVFX 写实 98 条、插画手绘 40 条、艺术摄影 37 条、电商四类 88 条）、348 条专业摄影参考、全套摄影大师技巧。**知识越多，图越差。**
 
 | 以前的写法 | 结果 |
 |---|---|
@@ -55,7 +55,7 @@
 │ ⛔ 不含大师名、胶片名、电影感              │
 ├─────────────────────────────────────────┤
 │ 第二层：知识库（Agent 自己看）             │
-│ 894条prompt、拉鲁斯资料、大师技巧全集       │
+│ 1140条prompt、拉鲁斯资料、大师技巧全集      │
 │ → Agent 翻译成第一层语言再写入 prompt      │
 ├─────────────────────────────────────────┤
 │ 第三层：负向词（给 AI 看）                 │
@@ -63,7 +63,7 @@
 └─────────────────────────────────────────┘
 ```
 
-**894 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
+**1140 条 prompt 不是指令——是灵感。** Agent 从中选题、构图，翻译成镜头参数语言喂给模型。
 
 ---
 
@@ -121,16 +121,16 @@ digital art, cinematic
 
 ## 2026-08-08 新增铁律（用户确认）
 
-- **人物出现仅限 1 张（全场铁律）**：5 张中只有 1 张允许出现人物，其余 4 张必须完全无人物（纯自然/动物/风光/建筑/静物/街道空景），prompt 明写 `no people, empty scene`，至少 1 张世界有名建筑
+- **人物出现仅限 1 张（全场铁律）**：7 张中只有 01 允许出现人物（林晚），02/03 为无文字衍生图，04–07 必须完全无人（纯自然/动物/风光/建筑/静物/街道空景），prompt 明写 `no people, empty scene`，至少 1 张世界有名建筑
 - **去重铁律**：选题前 `ls` 全部历史产出文件名 + 读各 README 的 style_key，排除历史所有场次已用主题（渔夫/补网/灯塔/雪山等同场景同主体一律视为重复），AM/PM/历史完全不重叠
-- **高雅·艺术成分（强制）**：5 张整体气质=高雅/艺术感——构图讲究、光线克制、色彩收敛，拒绝平庸糖水片；每张至少命中一个艺术感方向（经典构图/独特光影/名画质感/静谧氛围/手工质感）；艺术手法用相机物理语言写进 prompt（光比/构图/影调），不写艺术大师名；禁止艳俗色彩、网红打卡风、过度饱和、信息图感
+- **高雅·艺术成分（强制）**：7 张整体气质=高雅/艺术感——构图讲究、光线克制、色彩收敛，拒绝平庸糖水片；每张至少命中一个艺术感方向（经典构图/独特光影/名画质感/静谧氛围/手工质感）；艺术手法用相机物理语言写进 prompt（光比/构图/影调），不写艺术大师名；禁止艳俗色彩、网红打卡风、过度饱和、信息图感
 - **写实优先（铁律）**：所有图必须是真实可拍到的场景（相机物理语言），拒绝概念艺术/超现实/科幻/梦幻氛围/插画感；每张都要像真实摄影作品（纪实/新闻/国家地理质感，生活化、有细节瑕疵、光线来源合理）；人像那张必须真人感皮肤（毛孔/皱纹/汗珠/红血丝），禁止美颜/柔焦/杂志大片感
 
 ---
 
 ## 自动切换规则
 
-默认使用 relay `gpt-image-2-high`。只有用户明确点名 Grok / Gemini，或默认通道实际不可用时才切换；完成后切回默认通道。
+默认使用 relay `gpt-image-2-high`（2026-09-11 实测：中转拒绝 `gpt-image-2.5-*`，未知 2.5 id 会静默落到 medium）。只有用户明确点名 Grok / Gemini，或默认通道实际不可用时才切换。
 
 以下高风险场景优先通过深色背景、硬侧光、构图和物理真实感提示词修正，不因题材本身擅自换模型：
 
@@ -197,6 +197,8 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v6.1.0 | 2026-09-11 | 每场 7 张（林晚人物志+东方故事+白描+4无人图）；题库 1140 条；通道锁定 gpt-image-2-high；本地宋体排版标题 |
+| v6.0.0 | 2026-09-10 | 全面精简重构：单通道单事实源、QC 3项硬门禁、去重合并、删死代码 |
 | v5.5.0 | 2026-08-29 | Grok 人像固定分流；新增参考图驱动的中高尺度成年时尚写真规则；修复原始比例交付；公众号贴图改为仅图片+简短提示词 |
 | v5.4.0 | 2026-08-24 | 题库更新至894条；方向骨架随机化；光源闭环与材质响应；同步AM/PM稳定运行状态 |
 | v5.3.1 | 2026-08-13 | 提示词库更新至879条 + 光影/氛围模板去重规则（晨雾/金辉/长曝光等7类7天各限1次）+ 弃套路换光线思路 |
@@ -213,7 +215,7 @@ cp -r daily-image-training ~/.hermes/skills/creative/
 
 ### The Core Insight
 
-After accumulating 894 curated prompts and professional photography knowledge, our AI images got **worse**. Why?
+After accumulating 1140 curated prompts and professional photography knowledge, our AI images got **worse**. Why?
 
 **AI models don't understand art history — they understand camera physics.**
 
@@ -236,7 +238,7 @@ The fix: describe the scene in terms of physical constraints — lens, aperture,
 ### Three-Layer Architecture
 
 - **Layer 1**: Generation prompt (for the model, ≤150 words) — scene + light + camera + skin + negatives
-- **Layer 2**: Knowledge base (Agent only) — 894 prompts, photography references → Agent translates into Layer 1
+- **Layer 2**: Knowledge base (Agent only) — 1140 prompts, photography references → Agent translates into Layer 1
 - **Layer 3**: Negative keywords — tell AI what NOT to do, never how to do it
 
 All 9 styles (portrait, fashion, travel, street, studio, landscape, wildlife, macro, minimalist) verified in a single day with zero retries.
