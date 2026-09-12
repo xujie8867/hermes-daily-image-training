@@ -14,21 +14,36 @@ last_updated: "2026-09-11"
 1. **最后一步 = 发图**：确认文件真实存在后，最终响应必须逐行列出 **7 个** `MEDIA:/绝对路径` 路径（每行一个）。
 2. 只写文字总结 = 白生成；失败/缺图必须明确报告，不静默，不用低质结果凑数。
 
-## 每场结构（固定 7 张）
+## 每场结构（固定 7 张，排期按周中/周末分流）
 
-| # | 内容 | 生成方式 |
+### 1. 人像篇排期规则（2026-09-12 用户最新铁律）
+
+- **周一至周五（工作日场次）**：
+  - **01 高级人像摄影**：从生图提示词库 `data/all-prompts.json`（`category: portrait` 或摄影子集）采样，追求极致高级感与电影物理光影；**场景不设限、人物不设限**（不局限于林晚，释放多元顶级人像表达）；
+  - **02 水彩画风格复刻**：以 01 成品为参考，image-to-image，复刻 01 的人物、姿态与着装；
+  - **03 黑白线稿模型复刻**：以 01 成品为参考，image-to-image，单色黑白纯墨线线稿复刻 01；
+- **周六周日（周末场次）**：
+  - **01 林晚《古风人物志艺术字海报》**：固定使用**林晚角色形象**（F02 主身份图 + F01 辅助图），拉鲁斯东方策展海报风格（真实东方女性摄影 + 中文书法标题 + 局部 Graphic Line + 东方意境留白，低盘发，无痣）；
+  - **02 水彩画风格复刻**：以 01 成品为参考，image-to-image，**必须完全复刻 01 林晚的人物形象、同一面容、贴颈低发髻（low bun）与同一服装**，水彩通透温润质感，严禁脑补古典高发髻与红袍大袖；
+  - **03 黑白线稿模型复刻**：以 01 成品为参考，image-to-image，**必须完全复刻 01 林晚的人物形象、同一面容、贴颈低发髻（low bun）与同一服装**，纯黑白工笔白描墨线质感，大面积留白；
+
+| # | 内容 | 生成方式与排期机制 |
 |---|------|---------|
-| 01 | 林晚《古风人物志艺术字海报》 | F02 主身份图 + F01 辅助图，gpt-image-2.5-high |
-| 02 | 东方故事衍生 | 以 01 成品为参考，image-to-image |
-| 03 | 白描画衍生 | 以 01 成品为参考，image-to-image |
+| 01 | 人像主篇 | **工作日**：提示词库高级人像摄影(不限人物/场景)；**周末**：固定林晚拉鲁斯艺术字海报 |
+| 02 | 水彩画风格复刻 | 以 01 为参考，image-to-image，强制锁定 01 人物五官/发型/服装完全一致 |
+| 03 | 黑白线稿模型复刻 | 以 01 为参考，image-to-image，强制锁定 01 人物五官/发型/服装完全一致 |
 | 04 | 无人图·世界著名建筑 | 文生图，no people |
 | 05 | 无人图·意境风景 | 文生图，no people |
 | 06 | 无人图·自由方向 A | 文生图，no people |
 | 07 | 无人图·自由方向 B | 文生图，no people |
 
-- 02 固定 photo-story「东方故事」：暖象牙白纸底、低视觉密度、有限色块、结构线、留白；不是国风写真+做旧滤镜；保留林晚身份、姿态、器物。
-- 03 固定 photo-story「白描画」：暖白宣纸底、单色黑灰墨线、大面积留白；重点看双手与器物接触关系。
-- 02/03 禁止任何汉字/书法/印章/字母/乱码；01 的标题不得被重绘进衍生图。
+### 2. 02/03 复刻 Prompt 黄金防漂移模板（必遵）
+```text
+Keep exact same subject and identity from image 01: identical face and facial bone structure, identical natural low bun hairstyle at the nape of neck (STRICTLY NO high bun, NO elaborate hairpins, NO red ribbons), identical clothing and posture. Translate ONLY the medium:
+- 02: into minimalist fine watercolor painting on warm white textured paper, soft translucent wash edges.
+- 03: into pure black and white line art / traditional baimiao ink drawing, elegant rhythmic contours, zero shading, generous negative space.
+STRICTLY FORBIDDEN: text, Chinese characters, signatures, stamps, watermark, high bun, ancient headdress, change of clothing, change of facial identity.
+```
 - 04-07 至少 1 张世界著名建筑 + 1 张意境风景；06/07 从方向池随机抽（野生动物/工业场景/天文观测/昆虫微距/水下摄影/极地风光/市井美食/废墟遗迹/港口渔市/植物图鉴/都市夜景/雪域高原等），近 7 天不重复。
 
 ## 模型与通道（唯一规则）
@@ -77,11 +92,12 @@ NOT cinematic lighting, NOT staged portrait, NOT oversaturated, NOT digital art
 - ~~dedup_check.py 180天 style_key 机制~~：已废弃，不再执行（多系列实验遗留）。
 - 选题完成后做一次关键词检索核对（历史文件名 + README），命中冷却即重选。
 
-## QC（3 项硬门禁，2026-09-10 瘦身）
+## QC（4 项硬门禁，2026-09-12 强化防漂移）
 
 1. **无人图 0 人**：04-07 检测 0 脸/0 人（Vision 或 OpenCV 一次即可）。
 2. **人像 1 脸 2 手**：01 检出 1 脸、1 人、≤2 手且无穿模。
 3. **衍生图无文字**：02/03 OCR 为空（无乱码/伪文字）。
+4. **02/03 人像复刻防漂移**：02/03 必须完全复刻 01 人物；周末场林晚篇必须保持自然低发髻（low bun）与同一服装，严禁突变古典高发髻（high bun）、繁杂头饰或宽袍汉服。一经发现漂移立刻定向重跑一次。
 
 - 通过 → 交付；不通过 → 最多定向重试 1 次（01 生成阶段总计 ≤2 版，字形瑕疵走本地排版替换）；仍失败 → 明确报告缺图。
 - ~~InsightFace 余弦比对~~、四角亮度统计、逐字切片墨量校验：降为可选参考值，不作为重试触发条件，不再阻塞交付。
