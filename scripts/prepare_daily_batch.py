@@ -99,37 +99,55 @@ def load_history_used_terms(days=30):
     return used_titles, used_architectures, used_landscapes
 
 def sample_weekday_portraits(n=3):
-    """从 all-prompts.json 采样 3 条高质量独立人像 Prompt"""
-    if not os.path.exists(DATA_PROMPTS_PATH):
-        # 降级备用
-        return [
-            ("Indie Bookstore Portrait", "Cinematic portrait of a contemplative young woman in an indie bookstore, warm tungsten ambient light spilling between vintage wooden shelves, natural unposed expression, shot on Leica M11, 50mm f/1.4, film grain, photorealistic skin texture, 8k"),
-            ("Rooftop Sunset Editorial", "Fashion editorial portrait of a woman standing on an urban rooftop at golden sunset, soft breeze catching silk jacket, low angle perspective against warm glowing city skyline, Sony A7R V, 85mm f/1.4, soft lens flare, crisp eyes, authentic skin tones"),
-            ("Seaside Golden Hour", "Atmospheric documentary portrait of a young woman by the sea at twilight, ocean spray mist, subtle windblown hair, soft warm twilight backlight, Canon EOS R5, 85mm f/1.2, shallow depth of field, honest natural gaze, cinematic realism")
-        ][:n]
-        
+    """采样干净、独立、高质量摄影人像；不限定性别、年龄、族裔或风格。"""
+    # 只接受可直接执行的摄影 Prompt，拒绝模板占位符、JSON/REFERENCE 工作流和纯角色设定。
+    banned = ("{argument", "reference_", '"type"', "<image", "--", "placeholder")
+    photo_cues = ("photograph", "photography", "portrait", "camera", "lens", "lighting", "bokeh", "film", "editorial", "documentary")
+    human_cues = ("person", "people", " man ", " woman ", "human", "face", "boy", "girl", "elder", "child", "adult", "青年", "女性", "男性")
+    non_photo = ("robot", "android", "bugdroid", "notebook", "handwritten", "sketch", "illustration", "digital art", "3d render", "x-ray", "thermal scan", "product", "still life", "architecture")
+    candidates = []
     try:
         with open(DATA_PROMPTS_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
-        portrait_candidates = []
-        for item in data:
-            if isinstance(item, dict):
-                cat = item.get("category", "").lower()
-                prompt = item.get("prompt", "")
-                title = item.get("title", "")
-                if cat == "portrait" or "portrait" in prompt.lower() or "woman" in prompt.lower() or "man" in prompt.lower():
-                    portrait_candidates.append((title or "Portrait", prompt))
-        if len(portrait_candidates) >= n:
-            selected = random.sample(portrait_candidates, n)
-            return selected
-    except Exception:
-        pass
-        
-    return [
-        ("Indie Bookstore Portrait", "Cinematic documentary portrait of a young woman in an indie bookstore stairwell, muted cool ambient tones, authentic skin textures, Hasselblad 80mm f/2.8, natural light"),
-        ("Rooftop Golden Hour", "Contemporary streetwear portrait of a young woman on an industrial rooftop at sunset, warm cinematic backlighting, shallow depth of field, Sony A1 85mm f/1.4"),
-        ("Seaside Twilight Portrait", "Moody cinematic portrait of a woman standing on a windswept coastline at dusk, subtle waves bokeh, Kodak Portra 400 aesthetic, crisp details")
-    ][:n]
+        for item in data if isinstance(data, list) else []:
+            if not isinstance(item, dict):
+                continue
+            title = str(item.get("title") or "Portrait").strip()
+            prompt = str(item.get("prompt") or "").strip()
+            low = prompt.lower()
+            if len(prompt) < 180 or any(token in low for token in banned):
+                continue
+            if not any(cue in low for cue in photo_cues):
+                continue
+            if not any(cue in low for cue in human_cues) or any(token in low for token in non_photo):
+                continue
+            # 排除明显无人建筑/风景和不适合直接执行的图形设计提示。
+            if any(token in low for token in ("no people", "empty scene", "poster", "海报", "字体", "主标题", "advertisement", "banner", "layout", "editorial design", "graphic design", "product render", "器物", "中文")):
+                continue
+            candidates.append((title, prompt))
+    except (OSError, ValueError, TypeError):
+        candidates = []
+
+    # 先按题名和 Prompt 去重，再随机抽取；不向人物身份施加任何预设。
+    unique = []
+    seen = set()
+    for title, prompt in candidates:
+        key = " ".join(prompt.lower().split())
+        if key not in seen:
+            seen.add(key)
+            unique.append((title, prompt))
+    if len(unique) < n:
+        unique.extend([
+            ("Independent Portrait A", "High-end editorial portrait photography, an entirely independent subject chosen organically for the scene, natural expression, precise skin texture, cinematic light, medium-format camera, 85mm lens, shallow depth of field."),
+            ("Independent Portrait B", "Museum-quality documentary portrait photography, an entirely independent subject chosen organically for the scene, authentic presence, nuanced natural light, honest skin texture, medium-format camera, 80mm lens."),
+            ("Independent Portrait C", "Fine-art portrait photography, an entirely independent subject chosen organically for the scene, distinctive presence, controlled studio-cinematic lighting, crisp eyes, realistic skin texture, 90mm lens.")
+        ])
+    selected = random.sample(unique, n)
+    diversity_clause = (
+        " This is an independent portrait subject, not a recurring character and not a face copied from another image in this batch. "
+        "Choose gender, age, ethnicity, facial structure, hair, styling and expression organically from the scene; impose no default beauty template and do not make the subjects look like the same person."
+    )
+    return [(title, prompt + diversity_clause) for title, prompt in selected]
 
 def generate_batch(slot="am", target_date=None):
     now = datetime.datetime.now()
