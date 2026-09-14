@@ -20,7 +20,7 @@ last_updated: "2026-09-11"
 
 - **周一至周五（工作日场次）**：
   - **01–03 前三张全为人像**：**不限定林晚，不限定风格，以「高级感人像」为唯一准则**！
-    - 从生图提示词库 `data/all-prompts.json`（`category: portrait` 或摄影子集）采样 3 条高质量独立提示词；
+    - 通过 `prepare_daily_batch.py` 从已清洗词库采样 3 条高质量独立提示词（脚本负责剔除占位符/版式/无人场景）；
     - 场景不设限、人物不设限、风格不设限（电影纪实、复古胶片、自然光影特写、高级时装社论、工匠纪实等多元探索）；
     - **不限定性别、年龄、族裔、人物身份、发型、服装或具体审美模板**；唯一标准是高质量、真实、专业、具有高级感的摄影；
     - 三张必须是彼此独立的主体，不得复用同一张脸、同一身份或默认美女模板；生成前检查人物描述是否同质化，撞脸则重新采样；
@@ -66,9 +66,9 @@ STRICTLY FORBIDDEN: text, Chinese characters, signatures, stamps, watermark, hig
 ```
 
 - 去AI感三层必带：色彩收敛（muted natural colors）+ 物理真实感（skin pores / film grain / contact shadows）+ 构图去理想化（candid, natural asymmetry）。
-- 每张至少一个色彩锚点，禁止全图死灰。
-- 人像禁提痣/mole/beauty mark，面部细节完全靠 F02/F01 参考图。
-- 选题回避：浅色逆光组合、黑白纪实人像、镜面反射表面。
+- 每张至少一个色彩锚点，禁止全图死灰。黑白纪实例外：以影调层次代替色彩锚点。
+- 禁提痣/mole/beauty mark 的约束仅适用于周末林晚场；工作日独立人像不受林晚身份/发型/服装约束。
+- 选题回避：浅色逆光组合、镜面反射表面。黑白纪实、任何性别/年龄/族裔/风格均不回避（2026-09-14 用户铁律：不限定，唯一标准是高级感摄影）。
 
 ### 负向词（唯一版本，每张必带）
 
@@ -99,9 +99,9 @@ NOT cinematic lighting, NOT staged portrait, NOT oversaturated, NOT digital art
 ## QC（4 项硬门禁，2026-09-12 强化防漂移）
 
 1. **无人图 0 人**：04-07 检测 0 脸/0 人（Vision 或 OpenCV 一次即可）。
-2. **人像 1 脸 2 手**：01 检出 1 脸、1 人、≤2 手且无穿模。
-3. **衍生图无文字**：02/03 OCR 为空（无乱码/伪文字）。
-4. **02/03 人像复刻防漂移**：02/03 必须完全复刻 01 人物；周末场林晚篇必须保持自然低发髻（low bun）与同一服装，严禁突变古典高发髻（high bun）、繁杂头饰或宽袍汉服。一经发现漂移立刻定向重跑一次。
+2. **人像质感门禁**：01–03 确认画质锐利、有微对比度与眼神光、无肢体畸变、无 AI 塑料皮；OpenCV 检脸数仅作参考，不因背景/高噪点黑白街头的伪检阻断交付。
+3. **周末场 02/03 人像复刻防漂移**：周末场 02/03 必须完全复刻 01 林晚；保持自然低发髻（low bun）与同一服装，严禁突变古典高发髻（high bun）、繁杂头饰或宽袍汉服。一经发现漂移立刻定向重跑一次。工作日 01–03 不适用复刻规则。
+4. **衍生图无文字**：周末 02/03 OCR 为空（无乱码/伪文字）。
 
 - 通过 → 交付；不通过 → 最多定向重试 1 次（01 生成阶段总计 ≤2 版，字形瑕疵走本地排版替换）；仍失败 → 明确报告缺图。
 - ~~InsightFace 余弦比对~~、四角亮度统计、逐字切片墨量校验：降为可选参考值，不作为重试触发条件，不再阻塞交付。
@@ -119,7 +119,7 @@ NOT cinematic lighting, NOT staged portrait, NOT oversaturated, NOT digital art
 - 每场交付 7 图 + 7 条简短中文提示词（每条一句话）。
 - 公众号 `newspic` 草稿：`article_type=newspic`，标题固定 `【Ai摄影作品集】YYYY年M月D日周X 上午场|下午场`（日期取归档目录日期，星期真实计算）；只存草稿不群发；上传后回读核验类型/标题/图片数=7/顺序。
 - 发布命令：`python3 /Users/xuhailong/公众号任务/scripts/publish_codex_draft.py deploy --meta <publish_meta.json> --article-type newspic --run-id <日期-slug>`。
-- 标题重复报错 `checkpoint_verify_miss`/dedupe 时：先删远端 `runs/<run-id>/publish_state.json`，再带 `--delete-media-id-before-add <旧media_id>` 重发。
+- 标题重复报错 `checkpoint_verify_miss`/dedupe 时：**更新已有草稿用 `--update-media-id <旧media_id>`**（2026-09-14 用户要求更新而非删除重传）；仅当草稿需要全新独立发布时才删远端 `runs/<run-id>/publish_state.json` 重发。run_id 默认取 meta_path.parent.name（如 newspic），传 `--run-id <日期-slug>` 避免撞历史目录。
 - 归档：`/Volumes/外接硬盘/hermes-images/daily-image-training/YYYY-MM-DD-am|pm/`（images/ + orig/ + work/ + README.md + newspic/）。
 - 飞书发送最小边 ≥2000 的放大版；MEDIA 路径顶格独立行。
 
