@@ -6,7 +6,8 @@ prepare_daily_batch.py - 每日生图前置批处理准备脚本 (v1.0.0)
 2. 根据当天是周几自动分流：
    - 周一至周五：01-03 从词库采样3条独立顶级人像Prompt（不限林晚、不限风格）；
    - 周六周日：01固定林晚拉鲁斯海报，02/03做1:1水彩与线稿复刻配置；
-   - 04-07：建筑、风景、自由方向A、自由方向B（严格排除30天历史）。
+   - 04-05：建筑、风景（严格排除30天历史）；
+   - 06-07：两座不同城市的国风文旅叙事长卷海报（城市30天去重）。
 3. 自动在 work/ 目录下生成结构化配置，避免 Agent 盲目空转试错。
 """
 
@@ -43,13 +44,85 @@ LANDSCAPE_POOL = [
     ("Tuscan Rolling Hills", "Rolling emerald and golden wheat hills of Val d'Orcia in Tuscany at sunrise, solitary winding dirt road lined with slender Italian cypress trees, gentle valley ground mist, warm golden hour backlighting, medium format landscape, no people, empty scene")
 ]
 
-# 自由方向池
-FREE_TOPICS_POOL = [
-    ("Antarctic Emperor Penguin", "A solitary Emperor penguin standing on pristine Antarctic sea ice beside deep sapphire iceberg walls, low angle golden hour sunlight illuminating delicate orange-gold neck plumage, crisp subzero atmospheric clarity, telephoto wildlife shot 400mm f/4, ultra-realistic texture"),
-    ("Pine Needle Dewdrop Macro", "Macro extreme close-up of a solitary spherical dewdrop suspended on the tip of a fresh green pine needle, perfectly refracting an entire morning pine forest and rising golden sun inside the water sphere, razor-thin depth of field, 100mm macro f/2.8"),
-    ("Deep Sea Bioluminescent Jellyfish", "A solitary translucent Aequorea victoria jellyfish drifting in abyssal midnight ocean, pulsating with ethereal neon-cyan and indigo bioluminescence, delicate trailing tentacles, pitch black deep water, macro wildlife photography, ultra sharp"),
-    ("Sahara Fennec Fox", "A delicate cream-colored Fennec fox resting on wind-sculpted desert sand dune at sunset, huge alert translucent ears catching warm amber light, soft fine fur textures, low angle telephoto portrait 300mm f/2.8")
+# 国风城市文旅海报池。每项只使用可核验的城市地标、建筑、非遗和风物，禁止跨城混搭。
+CITY_POSTER_POOL = [
+    {
+        "slug": "dongguan-lingnan-scroll",
+        "city": "东莞",
+        "english": "DONGGUAN · CHINA",
+        "title": "莞邑流芳",
+        "seal": "岭南莞邑",
+        "palette": "lychee red, banyan green, warm ivory and seal vermilion",
+        "evidence": "Humen Weiyuan Fort, Keyuan Garden, arcaded Lingnan streets, dragon boat craftsmanship, lychees and blooming kapok",
+        "figure": "a local craftsperson working on a dragon boat ornament"
+    },
+    {
+        "slug": "quanzhou-maritime-scroll",
+        "city": "泉州",
+        "english": "QUANZHOU · CHINA",
+        "title": "刺桐海丝",
+        "seal": "海丝泉州",
+        "palette": "brick red, ocean teal, warm ivory and seal vermilion",
+        "evidence": "Kaiyuan Temple twin pagodas, Luoyang Bridge, red-brick swallowtail-roof houses, maritime sailing vessels, Dehua porcelain and puppet carving",
+        "figure": "a quiet artisan painting a Dehua porcelain piece"
+    },
+    {
+        "slug": "suzhou-garden-scroll",
+        "city": "苏州",
+        "english": "SUZHOU · CHINA",
+        "title": "姑苏雅韵",
+        "seal": "水巷姑苏",
+        "palette": "ink green, celadon blue, warm ivory and seal vermilion",
+        "evidence": "Humble Administrator's Garden, Tiger Hill Pagoda, white-walled black-tiled canal houses, stone bridges, Suzhou embroidery and silk",
+        "figure": "an embroiderer working beside a garden lattice window"
+    },
+    {
+        "slug": "xian-changan-scroll",
+        "city": "西安",
+        "english": "XI'AN · CHINA",
+        "title": "长安古意",
+        "seal": "千年长安",
+        "palette": "mineral blue, earthen ochre, warm ivory and seal vermilion",
+        "evidence": "Xi'an City Wall, Giant Wild Goose Pagoda, Tang-style eaves, bronze lamps, pomegranates and traditional shadow-puppet craft",
+        "figure": "a shadow-puppet artisan carving translucent leather"
+    },
+    {
+        "slug": "hangzhou-westlake-scroll",
+        "city": "杭州",
+        "english": "HANGZHOU · CHINA",
+        "title": "湖山清韵",
+        "seal": "西湖杭州",
+        "palette": "lotus green, mist blue, warm ivory and seal vermilion",
+        "evidence": "West Lake, Leifeng Pagoda, Broken Bridge, Jiangnan garden pavilions, Longjing tea terraces, silk umbrellas and lotus",
+        "figure": "a tea maker preparing Longjing leaves beside a bamboo tray"
+    },
+    {
+        "slug": "dunhuang-silkroad-scroll",
+        "city": "敦煌",
+        "english": "DUNHUANG · CHINA",
+        "title": "大漠敦煌",
+        "seal": "丝路敦煌",
+        "palette": "mineral turquoise, desert gold, warm ivory and seal vermilion",
+        "evidence": "Mogao Grotto cliff facade, Crescent Lake and Mingsha dunes, Silk Road camel route, apsara-inspired ribbon motifs and Dunhuang mural pigments",
+        "figure": "a mural conservator carefully preparing mineral pigments"
+    }
 ]
+
+def build_city_poster_prompt(item):
+    """生成无字底图；准确文字交由本地排版，避免模型乱码。"""
+    return (
+        "Premium Chinese cultural-tourism editorial poster, vertical 2:3 portrait. "
+        "Use an asymmetrical magazine composition: reserve the left 30 percent as clean warm-ivory handmade Xuan-paper negative space for later typography; "
+        "the right 70 percent forms one continuous S-shaped narrative scroll, never a rectangular photo collage. "
+        f"This poster is exclusively about {item['city']}, China. Use only these verified local elements: {item['evidence']}. "
+        "Right upper area: recognizable natural setting and landmark architecture; middle area: traditional architecture and local craft; "
+        f"right lower area: {item['figure']}, shown at three-quarter view facing inward, with accurate hands and believable working action. "
+        "Connect all layers with locally appropriate plants, water, cloud mist, silk ribbons and restrained ink-wash curves so every element appears to grow naturally from the scroll. "
+        "Blend precise documentary architectural detail with translucent Eastern watercolor, dry-brush Xuan-paper edges, subtle print grain and generous breathing space. "
+        f"Color palette: {item['palette']}. Clear foreground, middle ground and distance; refined museum-catalogue quality, not a cheap tourism flyer. "
+        "STRICTLY NO text, letters, calligraphy, seals, logo or watermark in the generated base image; keep the left column empty and unobstructed for deterministic local typography. "
+        "No mixed-city landmarks, no mismatched ethnic clothing, no giant face silhouette, no double exposure, no nine-grid collage, no hard rectangular frames, no neon colors, no plastic 3D render."
+    )
 
 def load_history_used_terms(days=30):
     used_titles = set()
@@ -100,11 +173,13 @@ def load_history_used_terms(days=30):
 
 def sample_weekday_portraits(n=3):
     """采样干净、独立、高质量摄影人像；不限定性别、年龄、族裔或风格。"""
-    # 只接受可直接执行的摄影 Prompt，拒绝模板占位符、JSON/REFERENCE 工作流和纯角色设定。
-    banned = ("{argument", "reference_", '"type"', "<image", "--", "placeholder")
-    photo_cues = ("photograph", "photography", "portrait", "camera", "lens", "lighting", "bokeh", "film", "editorial", "documentary")
-    human_cues = ("person", "people", " man ", " woman ", "human", "face", "boy", "girl", "elder", "child", "adult", "青年", "女性", "男性")
-    non_photo = ("robot", "android", "bugdroid", "notebook", "handwritten", "sketch", "illustration", "digital art", "3d render", "x-ray", "thermal scan", "product", "still life", "architecture")
+    # 只接受可直接执行的摄影 Prompt，拒绝模板占位符、JSON/REFERENCE 工作流、多格版式和纯风景建筑。
+    banned = ("{", "}", "<image", "--", "placeholder", "[", "]", "mirror", "镜面", "自拍", "selfie", "storyboard", "panel", "9-panel", "grid", "collage", "multipanel", "landscape photography", "magazine cover", " cover", "headline", "9:16", "16:9", "《", "》", "提示词", "制作了一组")
+    import re as _re
+    photo_cues = ("portrait", "photograph", "photography", "headshot", "cinematic portrait", "editorial portrait")
+    human_cues = ("man", "woman", "person", "human", "face", "boy", "girl", "elder", "child", "adult", "青年", "女性", "男性", "portrait of", "portrait photography")
+    human_re = _re.compile(r"\b(" + "|".join(_re.escape(c) for c in human_cues) + r")\b", _re.IGNORECASE)
+    non_photo = ("robot", "android", "bugdroid", "notebook", "handwritten", "sketch", "illustration", "digital art", "3d render", "x-ray", "thermal scan", "product", "still life", "architecture", "mountain road", "landscape")
     candidates = []
     try:
         with open(DATA_PROMPTS_PATH, "r", encoding="utf-8") as f:
@@ -115,14 +190,14 @@ def sample_weekday_portraits(n=3):
             title = str(item.get("title") or "Portrait").strip()
             prompt = str(item.get("prompt") or "").strip()
             low = prompt.lower()
-            if len(prompt) < 180 or any(token in low for token in banned):
+            if len(prompt) < 120 or any(token in low for token in banned) or prompt.startswith("{"):
                 continue
             if not any(cue in low for cue in photo_cues):
                 continue
-            if not any(cue in low for cue in human_cues) or any(token in low for token in non_photo):
+            if not human_re.search(prompt) or any(token in low for token in non_photo):
                 continue
             # 排除明显无人建筑/风景和不适合直接执行的图形设计提示。
-            if any(token in low for token in ("no people", "empty scene", "poster", "海报", "字体", "主标题", "advertisement", "banner", "layout", "editorial design", "graphic design", "product render", "器物", "中文")):
+            if any(token in low for token in ("no people", "empty scene", "poster", "海报", "字体", "主标题", "advertisement", "banner", "layout", "editorial design", "graphic design", "product render", "器物", "中文", "landscape photography")):
                 continue
             candidates.append((title, prompt))
     except (OSError, ValueError, TypeError):
@@ -211,7 +286,7 @@ def generate_batch(slot="am", target_date=None):
             "source_slot": "01"
         })
 
-    # ===== 04-07 无人图（工作日与周末统一） =====
+    # ===== 04-05 无人图；06-07 国风城市文旅海报（工作日与周末统一） =====
     # 04 著名建筑
     avail_arcs = [a for a in ARCHITECTURE_POOL if a[0] not in used_arcs]
     arc = random.choice(avail_arcs if avail_arcs else ARCHITECTURE_POOL)
@@ -236,24 +311,30 @@ def generate_batch(slot="am", target_date=None):
         "mode": "text2img"
     })
     
-    # 06 & 07 自由方向
-    free_selected = random.sample(FREE_TOPICS_POOL, 2)
-    batch.append({
-        "slot": "06",
-        "title": f"06-{free_selected[0][0].lower().replace(' ', '-')}",
-        "prompt": free_selected[0][1],
-        "negative_prompt": "people, human, ugly, blurry, deformed, cartoon, signature, text",
-        "aspect_ratio": "2:3",
-        "mode": "text2img"
-    })
-    batch.append({
-        "slot": "07",
-        "title": f"07-{free_selected[1][0].lower().replace(' ', '-')}",
-        "prompt": free_selected[1][1],
-        "negative_prompt": "people, human, ugly, blurry, deformed, cartoon, signature, text",
-        "aspect_ratio": "2:3",
-        "mode": "text2img"
-    })
+    # 06 & 07 两座不同城市；优先排除30天内已经使用过的城市 slug。
+    city_available = [c for c in CITY_POSTER_POOL if not any(c["slug"] in title for title in used_titles)]
+    if len(city_available) < 2:
+        city_available = CITY_POSTER_POOL
+    city_selected = random.sample(city_available, 2)
+    for slot_num, city_item in zip(("06", "07"), city_selected):
+        batch.append({
+            "slot": slot_num,
+            "title": f"{slot_num}-{city_item['slug']}",
+            "prompt": build_city_poster_prompt(city_item),
+            "negative_prompt": "wrong landmark, mixed cities, inaccurate architecture, malformed hands, extra fingers, garbled text, letters, logo, watermark, giant face silhouette, double exposure, grid collage, hard photo frames, neon, plastic 3d render",
+            "aspect_ratio": "2:3",
+            "mode": "text2img",
+            "style": "chinese-cultural-tourism-scroll-poster",
+            "allow_people": True,
+            "local_typography": {
+                "city": city_item["city"],
+                "english": city_item["english"],
+                "main_title": city_item["title"],
+                "seal": city_item["seal"],
+                "placement": "left-30-percent-clean-column",
+                "required": True
+            }
+        })
     
     # 写入当前场次预制配置
     batch_config_file = os.path.join(work_dir, "batch_plan.json")
